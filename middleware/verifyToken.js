@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
 
   const token = authHeader.split(' ')[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
-    if (error) return res.status(403).json('Invalid token');
+    if (error) return res.status(403).json({ message: 'Invalid User' });
 
     req.user = decoded.userInfo;
     req.isAdmin = decoded.userInfo.isAdmin;

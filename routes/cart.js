@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
+const verifyIsAdmin = require('../middleware/verifyIsAdmin');
 
-router.route('/').get(cartController.getAllCarts).post();
+router.route('/').get(verifyIsAdmin, cartController.getAllCarts).post(cartController.createCart);
 
-router.post('/', (req, res) => {
-  const username = req.body.username;
-  res.status(200).send({ message: `user ${username} created`, success: true });
-});
-
-router.patch('/', (req, res) => {});
+router.route('/:id').patch(cartController.updateCart).delete(cartController.deleteCart).get(cartController.getUserCart);
 
 module.exports = router;

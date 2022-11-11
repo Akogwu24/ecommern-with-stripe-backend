@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const orderController = require('../controllers/orderController');
+const verifyIsAdmin = require('../middleware/verifyIsAdmin');
 
-router.get('/', (req, res) => {
-  console.log('test endpoint');
-  res.status(200).send({ message: 'request successful', success: true });
-});
+router.route('/').get(verifyIsAdmin, orderController.getAllOrders).post(orderController.createOrder);
 
-router.post('/', (req, res) => {
-  const username = req.body.username;
-  res.status(200).send({ message: `user ${username} created`, success: true });
-});
+router.route('/:id').delete(orderController.deleteOrder).get(orderController.getOrder).patch(verifyIsAdmin, orderController.updateOrder);
 
-router.patch('/', (req, res) => {});
+router.get('/income', orderController.getMonthlyIncome);
 
 module.exports = router;
